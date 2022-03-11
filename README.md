@@ -103,7 +103,7 @@ if __name__ == '__main__':
     cve.run(target)
 ```
 
-### Useful functions
+### Useful Functions
 
 ```python
 # Title: xxxxxxx
@@ -126,10 +126,15 @@ class POC(BasicPoc):
         fofa = Fofa()
         fofa.set_config(api_key='xxxxx', api_email='xxxxx')  
         assets = fofa.assets(grammar)
+        result = []
+        for asset in assets:
+            target = f'https://{asset[1]}:{asset[2]}' if int(asset[2]) == 443 else f'http://{asset[1]}:{asset[2]}'
+            result.append(target)
+        return result
 
 if __name__ == '__main__':
     grammar = 'app="D_Link-DCS-2530L"'
     cve = POC()
-    assets = cve.assets(grammar)
-    cve.run(assets)
+    result = cve.assets(grammar)
+    cve.run(result)
 ```
