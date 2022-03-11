@@ -1,4 +1,4 @@
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 from .aio_poc import AioPoc
 from .basic_poc import BasicPoc
