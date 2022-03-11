@@ -15,7 +15,7 @@ class Fofa():
         self.email = api_email
 
     @logger.catch(level='ERROR')
-    def grammar_b64(self, grammar: str):
+    def _grammar_b64(self, grammar: str):
         b64 = base64.b64encode(grammar.encode()).decode()
         for i in range(b64.count('=')):
             b64.replace('=', '%3D')
@@ -23,7 +23,7 @@ class Fofa():
 
     @logger.catch(level='ERROR')
     def _search(self, grammar: str, page: int = 1, size: int = 100):
-        b64 = self.grammar_b64(grammar)
+        b64 = self._grammar_b64(grammar)
         furl = f'https://fofa.info/api/v1/search/all?email={self.email}&key={self.key}&qbase64={b64}&{grammar}&page={page}&size={size}'
         try:
             assets = requests.get(furl).content.decode('utf-8')

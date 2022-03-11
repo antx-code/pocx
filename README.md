@@ -1,5 +1,5 @@
 # pocx
-A Simple, Fast and Power poc engine tools was built by antx, which support synchronous mode and asynchronous mode.
+A Simple, Fast and Powerful poc engine tools was built by antx, which support synchronous mode and asynchronous mode.
 ## Install
 
 ```bash
@@ -7,6 +7,31 @@ pip3 install pocx
 ```
 
 ## Usage
+
+### POC Template
+
+```python
+# Title: xxxxxxx
+# Author: antx
+# Email: wkaifeng2007@163.com
+# CVE: CVE-xxxx-xxxxx
+
+from pocx import BasicPoc, AioPoc
+
+class POC(BasicPoc):
+    def __init__(self):
+        self.name = 'poc'
+        super(POC, self).__init__()
+
+    def poc(self, target):
+        your poc code here.
+
+
+if __name__ == '__main__':
+    target = 'http://127.0.0.1'
+    cve = POC()
+    cve.run(target)
+```
 
 ### Synchronous Mode Example
 
@@ -76,4 +101,35 @@ if __name__ == '__main__':
     target = 'http://127.0.0.1'
     cve = DLinkPoc()
     cve.run(target)
+```
+
+### Useful functions
+
+```python
+# Title: xxxxxxx
+# Author: antx
+# Email: wkaifeng2007@163.com
+# CVE: CVE-xxxx-xxxxx
+
+from pocx import BasicPoc, AioPoc
+from pocx.funcs import Fofa
+
+class POC(BasicPoc):
+    def __init__(self):
+        self.name = 'poc'
+        super(POC, self).__init__()
+
+    def poc(self, target):
+        your poc code here.
+
+    def assets(self, grammar: str):
+        fofa = Fofa()
+        fofa.set_config(api_key='xxxxx', api_email='xxxxx')  
+        assets = fofa.assets(grammar)
+
+if __name__ == '__main__':
+    grammar = 'app="D_Link-DCS-2530L"'
+    cve = POC()
+    assets = cve.assets(grammar)
+    cve.run(assets)
 ```
