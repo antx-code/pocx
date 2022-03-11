@@ -77,9 +77,13 @@ class Fofa():
         :return: the fofa assets
         """
         results = self._search(grammar, page, size)
+        targets = []
         if not results:
-            return []
-        return results['results']
+            return targets
+        for asset in results['results']:
+            target = f'https://{asset[1]}:{asset[2]}' if int(asset[2]) == 443 else f'http://{asset[1]}:{asset[2]}'
+            targets.append(target)
+        return list(set(targets))
 
     @logger.catch(level='ERROR')
     def asset_counts(self, grammar: str):

@@ -18,6 +18,7 @@ pip3 install pocx
 
 from pocx import BasicPoc, AioPoc
 
+
 class POC(BasicPoc):
     def __init__(self):
         self.name = 'poc'
@@ -44,6 +45,7 @@ if __name__ == '__main__':
 from pocx import BasicPoc
 from loguru import logger
 
+
 class DLinkPoc(BasicPoc):
     @logger.catch(level='ERROR')
     def __init__(self):
@@ -62,6 +64,7 @@ class DLinkPoc(BasicPoc):
         except Exception as e:
             logger.error(f'[-] {target} {e}')
 
+
 if __name__ == '__main__':
     target = 'http://127.0.0.1'
     cve = DLinkPoc()
@@ -78,6 +81,7 @@ if __name__ == '__main__':
 
 from pocx import AioPoc
 from loguru import logger
+
 
 class DLinkPoc(AioPoc):
     @logger.catch(level='ERROR')
@@ -97,6 +101,7 @@ class DLinkPoc(AioPoc):
         except Exception as e:
             logger.error(f'[-] {target} {e}')
 
+
 if __name__ == '__main__':
     target = 'http://127.0.0.1'
     cve = DLinkPoc()
@@ -114,6 +119,7 @@ if __name__ == '__main__':
 from pocx import BasicPoc, AioPoc
 from pocx.funcs import Fofa
 
+
 class POC(BasicPoc):
     def __init__(self):
         self.name = 'poc'
@@ -124,17 +130,47 @@ class POC(BasicPoc):
 
     def assets(self, grammar: str):
         fofa = Fofa()
-        fofa.set_config(api_key='xxxxx', api_email='xxxxx')  
+        fofa.set_config(api_key='xxxxxx', api_email='xxxxxx')  
         assets = fofa.assets(grammar)
-        result = []
-        for asset in assets:
-            target = f'https://{asset[1]}:{asset[2]}' if int(asset[2]) == 443 else f'http://{asset[1]}:{asset[2]}'
-            result.append(target)
-        return result
+        return assets
 
 if __name__ == '__main__':
-    grammar = 'app="D_Link-DCS-2530L"'
+    grammar = 'app="xxxxxx"'
     cve = POC()
     result = cve.assets(grammar)
     cve.run(result)
+```
+
+or 
+
+```python
+# Title: xxxxxxx
+# Author: antx
+# Email: wkaifeng2007@163.com
+# CVE: CVE-xxxx-xxxxx
+
+from pocx import BasicPoc, AioPoc
+from pocx.funcs import Fofa
+
+
+class POC(BasicPoc):
+    def __init__(self):
+        self.name = 'poc'
+        super(POC, self).__init__()
+
+    def poc(self, target):
+        your poc code here.
+
+
+if __name__ == '__main__':
+    grammar = 'app="xxxxxx"'
+    cve = POC()
+    fofa = Fofa()
+    fofa.set_config(api_key='xxxxxx', api_email='xxxxxx')
+    print(f'[+] the asset account of grammar: {grammar} are: {fofa.asset_counts(grammar)}')
+    pages = fofa.asset_pages(grammar)
+    for page in range(1, pages + 1):
+        print(f'[*] page {page}')
+        assets = fofa.assets(grammar, page)
+        cve.run(assets)
 ```
