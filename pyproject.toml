@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pocx"
-version = "0.1.4"
+version = "0.1.5"
 description = "A Simple, Fast and Powerful poc engine tools was built by antx, which support synchronous mode and asynchronous mode."
 authors = ["antx <wkaifeng2007@163.com>"]
 license = "MIT"

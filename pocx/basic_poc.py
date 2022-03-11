@@ -11,9 +11,8 @@ class BasicPoc(metaclass=ABCMeta):
         self.mode = 'Synchronous Mode'
         self.name = "BasicPoc"
         self.example = ""
-        self.session = httpx.Client()
+        self.session = httpx.Client(verify=False)
         self.session.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
-        self.session.verify = False
 
     @logger.catch(level='ERROR')
     def set_headers(self, headers: dict = None):
