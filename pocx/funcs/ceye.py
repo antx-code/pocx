@@ -1,7 +1,7 @@
 import httpx
 import subprocess
 from loguru import logger
-from snow_flake import IdWorker
+from .snow_flake import IdWorker
 
 
 class Ceye():
