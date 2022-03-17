@@ -4,6 +4,7 @@ import asyncio
 import httpx
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+httpx._config.DEFAULT_CIPHERS += ":ALL:@SECLEVEL=1"
 
 
 class AioPoc(metaclass=ABCMeta):

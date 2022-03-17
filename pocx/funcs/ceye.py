@@ -1,5 +1,4 @@
 import httpx
-import subprocess
 from loguru import logger
 from .snow_flake import IdWorker
 
@@ -40,20 +39,24 @@ class Ceye():
         return str(self.id_worker.get_id())
 
     @logger.catch(level='ERROR')
-    def verify(self, pid: str, verify_type: str='dns'):
+    def verify(self, pfilter: str, verify_type: str='dns'):
         """
 
         Verify the payload.
 
-        :param pid: The unique id of the payload.
+        :param pfilter: The unique string of the payload.
         :param verify_type: The type of the verification, http or dns.
         :return: The bool result of the verification.
         """
-        verify_url = f'http://api.ceye.io/v1/records?token={self.api_token}&type={verify_type}&filter={pid}'
-        result = httpx.get(verify_url).json()
-        if not result['data']:
-            logger.error(f'{pid} not found in Ceye')
+        verify_url = f'http://api.ceye.io/v1/records?token={self.api_token}&type={verify_type}&filter={pfilter}'
+        try:
+            result = httpx.get(verify_url).json()
+            if not result['data']:
+                logger.error(f'{pfilter} not found in Ceye')
+                return False
+            logger.success(f'{pfilter} found in Ceye')
+            logger.success(f'The ceye records are: \n{result["data"]}')
+            return True
+        except Exception as e:
+            logger.error(f'verify has been occur an error \n{e}')
             return False
-        logger.success(f'{pid} found in Ceye')
-        logger.success(f'The ceye records are: \n{result["data"]}')
-        return True
