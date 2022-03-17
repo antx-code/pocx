@@ -1,5 +1,11 @@
 # pocx
 A Simple, Fast and Powerful poc engine tools was built by antx, which support synchronous mode and asynchronous mode.
+
+## Description
+pocx is a simple, fast and powerful poc engine tools, which support synchronous mode and asynchronous mode. pocx also 
+support some useful features, which like fofa search and parse assets to verify. You also can use smart method to verify 
+some special assets by using ceyeio, which it is cannot return or display the result. 
+
 ## Install
 
 ```bash
@@ -25,7 +31,11 @@ class POC(BasicPoc):
         super(POC, self).__init__()
 
     def poc(self, target):
+        """
+        
         your poc code here.
+        
+        """
 
 
 if __name__ == '__main__':
@@ -110,38 +120,7 @@ if __name__ == '__main__':
 
 ### Useful Functions
 
-```python
-# Title: xxxxxxx
-# Author: antx
-# Email: wkaifeng2007@163.com
-# CVE: CVE-xxxx-xxxxx
-
-from pocx import BasicPoc, AioPoc
-from pocx.funcs import Fofa
-
-
-class POC(BasicPoc):
-    def __init__(self):
-        self.name = 'poc'
-        super(POC, self).__init__()
-
-    def poc(self, target):
-        your poc code here.
-
-    def assets(self, grammar: str):
-        fofa = Fofa()
-        fofa.set_config(api_key='xxxxxx', api_email='xxxxxx')  
-        assets = fofa.assets(grammar)
-        return assets
-
-if __name__ == '__main__':
-    grammar = 'app="xxxxxx"'
-    cve = POC()
-    result = cve.assets(grammar)
-    cve.run(result)
-```
-
-or 
+#### FoFa
 
 ```python
 # Title: xxxxxxx
@@ -159,7 +138,11 @@ class POC(BasicPoc):
         super(POC, self).__init__()
 
     def poc(self, target):
+        """
+        
         your poc code here.
+        
+        """
 
 
 if __name__ == '__main__':
@@ -173,4 +156,41 @@ if __name__ == '__main__':
         print(f'[*] page {page}')
         assets = fofa.assets(grammar, page)
         cve.run(assets)
+```
+
+#### Ceye
+
+```python
+# Title: xxxxxxx
+# Author: antx
+# Email: wkaifeng2007@163.com
+# CVE: CVE-xxxx-xxxxx
+
+from pocx import BasicPoc, AioPoc
+from pocx.funcs import Ceye
+
+
+class POC(BasicPoc):
+    def __init__(self):
+        self.name = 'poc'
+        super(POC, self).__init__()
+        self.ceyeio = Ceye()
+        
+    def poc(self, target):
+        pid = self.ceyeio.generate_payload_id()
+        self.ceyeio.set_config(api_token='xxxxxx', identifier='xxxxxx.ceye.io')
+    
+        """
+        
+        your poc code here.
+        
+        """
+        
+        self.ceyeio.verify(pid, 'dns')
+
+
+if __name__ == '__main__':
+    target = 'http://127.0.0.1:8888'
+    cve = POC()
+    cve.run(target)
 ```

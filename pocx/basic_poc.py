@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from loguru import logger
 import httpx
 import urllib3
-urllib3.disable_warnings()
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class BasicPoc(metaclass=ABCMeta):

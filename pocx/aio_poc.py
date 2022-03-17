@@ -3,7 +3,7 @@ from loguru import logger
 import asyncio
 import httpx
 import urllib3
-urllib3.disable_warnings()
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class AioPoc(metaclass=ABCMeta):

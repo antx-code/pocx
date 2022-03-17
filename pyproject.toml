@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pocx"
-version = "0.1.5"
+version = "0.1.6"
 description = "A Simple, Fast and Powerful poc engine tools was built by antx, which support synchronous mode and asynchronous mode."
 authors = ["antx <wkaifeng2007@163.com>"]
 license = "MIT"
@@ -18,10 +18,12 @@ default = true
 python = "^3.8"
 httpx = "^0.22.0"
 loguru = "^0.6.0"
+urllib3 = "^1.26.9"
 
 [tool.poetry.dev-dependencies]
 httpx = "^0.22.0"
 loguru = "^0.6.0"
+urllib3 = "^1.26.9"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

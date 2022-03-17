@@ -1,4 +1,4 @@
-import requests
+import httpx
 import json
 import base64
 from loguru import logger
@@ -59,7 +59,7 @@ class Fofa():
         b64 = self._grammar_b64(grammar)
         furl = f'https://{self.domain}/api/v1/search/all?email={self.email}&key={self.key}&qbase64={b64}&{grammar}&page={page}&size={size}'
         try:
-            assets = requests.get(furl).content.decode('utf-8')
+            assets = httpx.get(furl).content.decode('utf-8')
             return json.loads(assets)
         except Exception as e:
             logger.error(e)
