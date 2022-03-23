@@ -39,7 +39,7 @@ class Ceye():
         return str(self.id_worker.get_id())
 
     @logger.catch(level='ERROR')
-    def verify(self, pfilter: str, verify_type: str='dns'):
+    def verify(self, pfilter: str, verify_type: str = 'dns'):
         """
 
         Verify the payload.

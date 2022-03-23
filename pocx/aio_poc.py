@@ -12,9 +12,11 @@ class AioPoc(metaclass=ABCMeta):
     def __init__(self) -> None:
         self.mode = 'Asynchronous Mode'
         self.name = "AioPoc"
-        self.example = ""
+        self.cve = ''
+        self.example = ''
         self.session = httpx.AsyncClient(verify=False)
         self.session.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
+        logger.info(f'Testing {self.name} with {self.mode}.')
 
     @logger.catch(level='ERROR')
     def set_headers(self, headers: dict = None):
@@ -25,8 +27,8 @@ class AioPoc(metaclass=ABCMeta):
     async def aio_request(self, url: str, method: str = 'get', timeout: int = 10, **kwargs) -> httpx.Response:
         try:
             resp = await self.session.request(method, url, timeout=timeout, **kwargs)
-        except httpx.RequestError as e:
-            logger.error(f'[-] Run Poc[{self.name}] => {url} Error:\n\t{e}')
+        except Exception as e:
+            logger.error(f'[-] Run Poc [{self.cve} - {self.name}] Connection Error => {url} was not reachable.')
             resp = None
         return resp
 
@@ -57,8 +59,6 @@ class AioPoc(metaclass=ABCMeta):
 
     @logger.catch(level='ERROR')
     def run(self, target):
-        logger.info(f'testing {self.name} with {self.mode}.')
-
         targets = [target] if isinstance(target, str) else target
 
         loop = asyncio.get_event_loop()

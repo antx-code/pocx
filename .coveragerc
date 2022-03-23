@@ -1,0 +1,7 @@
+[run]
+
+source =
+    pocx
+    tests
+
+parallel = True

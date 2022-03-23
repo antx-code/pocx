@@ -1,11 +1,13 @@
 # coding: utf-8
 import time
 
+
 class InvalidSystemClock(Exception):
     """
     时钟回拨异常
     """
     pass
+
 
 # 64位ID的划分
 WORKER_ID_BITS = 5
@@ -26,6 +28,7 @@ SEQUENCE_MASK = -1 ^ (-1 << SEQUENCE_BITS)
 
 # 开始时间截 (1995-03-19)
 TWEPOCH = 795542400000
+
 
 class IdWorker(object):
     """

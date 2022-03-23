@@ -11,9 +11,11 @@ class BasicPoc(metaclass=ABCMeta):
     def __init__(self) -> None:
         self.mode = 'Synchronous Mode'
         self.name = "BasicPoc"
-        self.example = ""
+        self.cve = ''
+        self.example = ''
         self.session = httpx.Client(verify=False)
         self.session.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
+        logger.info(f'Testing {self.name} with {self.mode}.')
 
     @logger.catch(level='ERROR')
     def set_headers(self, headers: dict = None):
@@ -24,8 +26,8 @@ class BasicPoc(metaclass=ABCMeta):
     def request(self, url: str, method: str = 'get', timeout: int = 10, **kwargs) -> httpx.Response:
         try:
             resp = self.session.request(method, url, timeout=timeout, **kwargs)
-        except httpx.RequestError as e:
-            logger.error(f'[-] Run Poc[{self.name}] => {url} Error:\n\t{e}')
+        except Exception as e:
+            logger.error(f'[-] Run Poc [{self.cve} - {self.name}] Connection Error => {url} was not reachable.')
             resp = None
         return resp
 
@@ -56,8 +58,6 @@ class BasicPoc(metaclass=ABCMeta):
 
     @logger.catch(level='ERROR')
     def run(self, target):
-        logger.info(f'testing {self.name} with {self.mode}.')
-
         targets = [target] if isinstance(target, str) else target
 
         for target in targets:

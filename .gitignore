@@ -131,3 +131,6 @@ dmypy.json
 dist
 .idea
 poetry.lock
+.coverage
+coverage.xml
+/tests/
