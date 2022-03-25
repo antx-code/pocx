@@ -27,7 +27,7 @@ class AioPoc(metaclass=ABCMeta):
     async def aio_request(self, url: str, method: str = 'get', timeout: int = 10, **kwargs) -> httpx.Response:
         try:
             resp = await self.session.request(method, url, timeout=timeout, **kwargs)
-        except Exception as e:
+        except Exception:
             logger.error(f'[-] Run Poc [{self.cve} - {self.name}] Connection Error => {url} was not reachable.')
             resp = None
         return resp

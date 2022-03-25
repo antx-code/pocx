@@ -6,7 +6,6 @@ class InvalidSystemClock(Exception):
     """
     时钟回拨异常
     """
-    pass
 
 
 # 64位ID的划分

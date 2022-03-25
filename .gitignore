@@ -132,5 +132,8 @@ dist
 .idea
 poetry.lock
 .coverage
+htmlcov
+.pytest_cache
 coverage.xml
-/tests/
+*.pyc
+__pycache__
