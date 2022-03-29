@@ -60,7 +60,11 @@ class Fofa():
         furl = f'https://{self.domain}/api/v1/search/all?email={self.email}&key={self.key}&qbase64={b64}&{grammar}&page={page}&size={size}'
         try:
             assets = httpx.get(furl).content.decode('utf-8')
-            return json.loads(assets)
+            result = json.loads(assets)
+            if not result['error']:
+                return result
+            logger.error(f'Fofa API error: {result["errmsg"]}')
+            return None
         except Exception as e:
             logger.error(e)
             return None

