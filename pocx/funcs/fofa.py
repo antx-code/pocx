@@ -2,6 +2,17 @@ import httpx
 import json
 import base64
 from loguru import logger
+import urllib3
+import ssl
+
+try:
+    ssl_context = httpx.create_ssl_context()
+except:
+    ssl_context = ssl.create_default_context()
+ssl_context.options ^= ssl.OP_NO_TLSv1  # Enable TLS 1.0 back
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+httpx._config.DEFAULT_CIPHERS += ":ALL:@SECLEVEL=1"
 
 
 class Fofa():
@@ -60,14 +71,13 @@ class Fofa():
         furl = f'https://{self.domain}/api/v1/search/all?email={self.email}&key={self.key}&qbase64={b64}&{grammar}&page={page}&size={size}'
         try:
             assets = httpx.get(furl).content.decode('utf-8')
-            result = json.loads(assets)
-            if not result['error']:
-                return result
-            logger.error(f'Fofa API error: {result["errmsg"]}')
-            return None
-        except Exception as e:
-            logger.error(e)
-            return None
+        except Exception as _:
+            assets = httpx.get(furl, verify=ssl_context).content.decode('utf-8')
+        result = json.loads(assets)
+        if not result['error']:
+            return result
+        logger.error(f'Fofa API error: {result["errmsg"]}')
+        return None
 
     @logger.catch(level='ERROR')
     def assets(self, grammar: str, page: int = 1, size: int = 100):
@@ -116,6 +126,12 @@ class Fofa():
         results = self._search(grammar, 1, 1)
         if not results:
             return 1
-        count = results['size'] % size
-        pages = results['size'] // size if count == 0 else results['size'] // size + 1
+        all_counts = results['size']
+        if all_counts >= 10000:
+            logger.warning("Fofa's asset counts is {all_counts}, which is too much, so we only search the first 10000.")
+            count = 10000 % size
+            pages = 10000 // size if count == 0 else 10000 // size + 1
+        else:
+            count = results['size'] % size
+            pages = all_counts // size if count == 0 else all_counts // size + 1
         return pages

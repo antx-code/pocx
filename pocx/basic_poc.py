@@ -2,6 +2,14 @@ from abc import ABCMeta, abstractmethod
 from loguru import logger
 import httpx
 import urllib3
+import ssl
+
+try:
+    ssl_context = httpx.create_ssl_context()
+except:
+    ssl_context = ssl.create_default_context()
+ssl_context.options ^= ssl.OP_NO_TLSv1  # Enable TLS 1.0 back
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 httpx._config.DEFAULT_CIPHERS += ":ALL:@SECLEVEL=1"
 
@@ -13,7 +21,10 @@ class BasicPoc(metaclass=ABCMeta):
         self.name = "BasicPoc"
         self.cve = ''
         self.example = ''
-        self.session = httpx.Client(verify=False)
+        try:
+            self.session = httpx.Client(verify=False)
+        except Exception as e:
+            self.session = httpx.Client(verify=ssl_context)
         self.session.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
         logger.info(f'Testing {self.name} with {self.mode}.')
 
