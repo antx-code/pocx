@@ -95,7 +95,7 @@ class Fofa():
         if not results:
             return targets
         for asset in results['results']:
-            target = f'https://{asset[1]}:{asset[2]}' if int(asset[2]) == 443 else f'http://{asset[1]}:{asset[2]}'
+            target = asset[0] if 'http' in asset[0] else (f'https://{asset[1]}:{asset[2]}' if int(asset[2]) == 443 else f'http://{asset[1]}:{asset[2]}')
             targets.append(target)
         return list(set(targets))
 
@@ -128,7 +128,7 @@ class Fofa():
             return 1
         all_counts = results['size']
         if all_counts >= 10000:
-            logger.warning("Fofa's asset counts is {all_counts}, which is too much, so we only search the first 10000.")
+            logger.warning(f"Fofa's asset counts is {all_counts}, which is too much, so we only search the first 10000.")
             count = 10000 % size
             pages = 10000 // size if count == 0 else 10000 // size + 1
         else:
