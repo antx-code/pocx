@@ -27,12 +27,23 @@ class AioPoc(metaclass=ABCMeta):
         except Exception as e:
             self.session = httpx.AsyncClient(verify=ssl_context)
         self.session.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
+        self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
         logger.info(f'Testing {self.name} with {self.mode}.')
 
     @logger.catch(level='ERROR')
     def set_headers(self, headers: dict = None):
         if headers is not None:
             self.session.headers = headers
+            self.headers = headers
+
+    @logger.catch(level='ERROR')
+    def set_proxies(self, proxies: dict = None):
+        if proxies is not None:
+            try:
+                self.session = httpx.AsyncClient(proxies=proxies, verify=False)
+            except Exception as e:
+                self.session = httpx.AsyncClient(proxies=proxies, verify=ssl_context)
+            self.session.headers = self.headers
 
     @logger.catch(level='ERROR')
     async def aio_request(self, url: str, method: str = 'get', timeout: int = 10, **kwargs) -> httpx.Response:

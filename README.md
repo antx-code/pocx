@@ -19,7 +19,7 @@ pip3 install pocx
 ```python
 # Title: xxxxxxx
 # Author: antx
-# Email: wkaifeng2007@163.com
+# Email: 7877940+antx-code@users.noreply.github.com
 # CVE: CVE-xxxx-xxxxx
 
 from pocx import BasicPoc, AioPoc
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 ```python
 # Title: D-Link DCS系列监控 账号密码信息泄露 CVE-2020-25078
 # Author: antx
-# Email: wkaifeng2007@163.com
+# Email: 7877940+antx-code@users.noreply.github.com
 # CVE: CVE-2020-25078
 
 from pocx import BasicPoc
@@ -87,7 +87,7 @@ if __name__ == '__main__':
 ```python
 # Title: D-Link DCS系列监控 账号密码信息泄露 CVE-2020-25078
 # Author: antx
-# Email: wkaifeng2007@163.com
+# Email: 7877940+antx-code@users.noreply.github.com
 # CVE: CVE-2020-25078
 
 from pocx import AioPoc
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 ```python
 # Title: xxxxxxx
 # Author: antx
-# Email: wkaifeng2007@163.com
+# Email: 7877940+antx-code@users.noreply.github.com
 # CVE: CVE-xxxx-xxxxx
 
 from pocx import BasicPoc, AioPoc
@@ -165,7 +165,7 @@ if __name__ == '__main__':
 ```python
 # Title: xxxxxxx
 # Author: antx
-# Email: wkaifeng2007@163.com
+# Email: 7877940+antx-code@users.noreply.github.com
 # CVE: CVE-xxxx-xxxxx
 
 from pocx import BasicPoc, AioPoc
@@ -190,7 +190,56 @@ class POC(BasicPoc):
         
         self.ceyeio.verify(pid, 'dns')
         return
+```
 
+#### Proxy
+
+```python
+# Title: xxxxxxx
+# Author: antx
+# Email: 7877940+antx-code@users.noreply.github.com
+# CVE: CVE-xxxx-xxxxx
+
+from pocx import BasicPoc, AioPoc
+from pocx.funcs import Ceye
+
+
+class POC(BasicPoc):
+    def __init__(self):
+        self.name = 'poc'
+        super(POC, self).__init__()
+        self.ceyeio = Ceye()
+
+    def poc(self, target):
+        pid = self.ceyeio.generate_payload_id()
+        self.ceyeio.set_config(api_token='xxxxxx', identifier='xxxxxx.ceye.io')
+        self.set_headers({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
+                                        'like Gecko) Chrome/87.0.4280.88 Safari/537.36'})
+        proxy = {
+            'all://': 'http://127.0.0.1:7890',
+        }
+        
+        """
+        
+        or use httpx support proxy:
+        proxy = {
+            'http://': 'http://127.0.0.1:7890',
+            'https://': 'https://127.0.0.1:7890',
+            }
+        
+        """
+        
+        self.set_proxies(proxy)
+
+        """
+        
+        your poc code here.
+        
+        """
+
+        self.ceyeio.verify(pid, 'dns')
+        return
+    
 
 if __name__ == '__main__':
     target = 'http://127.0.0.1:8888'
