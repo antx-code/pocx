@@ -12,7 +12,7 @@ keywords = ["async", "poc", "engine", "pocx"]
 [[tool.poetry.source]]
 name = "aliyun"
 url = "https://mirrors.aliyun.com/pypi/simple"
-default = true
+priority = "primary"
 
 [tool.poetry.dependencies]
 python = "^3.8"
